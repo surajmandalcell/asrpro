@@ -1,8 +1,8 @@
-"""Completely remade sidebar widget with proper compact spacing."""
+"""Sidebar widget with navigation and branding."""
 
 from typing import List, Dict, Any
 from PySide6.QtCore import Qt, Signal
-from PySide6.QtGui import QFont, QPainter, QPen, QIcon, QPixmap, QBrush
+from PySide6.QtGui import QFont, QPainter, QPen, QIcon
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton
 
 from .styles.dark_theme import DarkTheme, Dimensions, Fonts, Spacing
@@ -10,8 +10,8 @@ from .utils.icon_loader import IconLoader
 from .traffic_lights import TrafficLights
 
 
-class CompactNavigationItem(QWidget):
-    """Compact navigation item with proper spacing."""
+class NavigationItem(QWidget):
+    """Individual navigation item with icon and text."""
     
     clicked = Signal(str)  # section_id
     
@@ -33,19 +33,22 @@ class CompactNavigationItem(QWidget):
     def _setup_ui(self):
         """Set up the navigation item layout."""
         layout = QHBoxLayout(self)
-        layout.setContentsMargins(12, 6, 12, 6)  # Compact padding
-        layout.setSpacing(8)  # Small gap between icon and text
+        layout.setContentsMargins(Spacing.ITEM_PADDING_H, 
+                                  Spacing.ITEM_PADDING_V,
+                                  Spacing.ITEM_PADDING_H, 
+                                  Spacing.ITEM_PADDING_V)
+        layout.setSpacing(Spacing.ICON_TEXT_GAP)
         
         # Icon label
         self.icon_label = QLabel()
-        self.icon_label.setFixedSize(16, 16)
+        self.icon_label.setFixedSize(Dimensions.NAV_ITEM_ICON_SIZE, Dimensions.NAV_ITEM_ICON_SIZE)
         self.icon_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(self.icon_label)
         
         # Text label
         self.text_label = QLabel(self.text)
         font = QFont()
-        font.setPointSize(13)
+        font.setPointSize(Fonts.BASE_SIZE)
         font.setWeight(Fonts.NORMAL)
         self.text_label.setFont(font)
         layout.addWidget(self.text_label)
@@ -56,7 +59,7 @@ class CompactNavigationItem(QWidget):
     
     def _apply_styles(self):
         """Apply base styles."""
-        self.setFixedHeight(28)  # Compact height
+        self.setFixedHeight(Spacing.ITEM_PADDING_V * 2 + Dimensions.NAV_ITEM_ICON_SIZE + 4)
         self.setCursor(Qt.CursorShape.PointingHandCursor)
     
     def set_active(self, active: bool):
@@ -84,14 +87,14 @@ class CompactNavigationItem(QWidget):
         self.text_label.setStyleSheet(f"color: {text_color};")
         
         # Update icon with color tinting
-        icon = IconLoader.load_icon(self.icon_name, 16, icon_color)
-        self.icon_label.setPixmap(icon.pixmap(16, 16))
+        icon = IconLoader.load_icon(self.icon_name, Dimensions.NAV_ITEM_ICON_SIZE, icon_color)
+        self.icon_label.setPixmap(icon.pixmap(Dimensions.NAV_ITEM_ICON_SIZE, Dimensions.NAV_ITEM_ICON_SIZE))
         
         # Update background
         if bg_color:
-            self.setStyleSheet(f"CompactNavigationItem {{ background-color: rgba({bg_color.red()}, {bg_color.green()}, {bg_color.blue()}, {bg_color.alpha()}); border-radius: 4px; }}")
+            self.setStyleSheet(f"NavigationItem {{ background-color: rgba({bg_color.red()}, {bg_color.green()}, {bg_color.blue()}, {bg_color.alpha()}); }}")
         else:
-            self.setStyleSheet("CompactNavigationItem { background-color: transparent; }")
+            self.setStyleSheet("")
         
         self.update()
     
@@ -114,8 +117,8 @@ class CompactNavigationItem(QWidget):
         super().leaveEvent(event)
 
 
-class CompactLogoSection(QWidget):
-    """Compact app logo and branding section."""
+class LogoSection(QWidget):
+    """App logo and branding section."""
     
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -124,12 +127,15 @@ class CompactLogoSection(QWidget):
     def _setup_ui(self):
         """Set up the logo section."""
         layout = QHBoxLayout(self)
-        layout.setContentsMargins(12, 12, 12, 8)  # Compact padding
-        layout.setSpacing(6)  # Small gap
+        layout.setContentsMargins(Dimensions.LOGO_PADDING, 
+                                  Dimensions.LOGO_PADDING, 
+                                  Dimensions.LOGO_PADDING, 
+                                  Dimensions.LOGO_PADDING)
+        layout.setSpacing(Dimensions.LOGO_GAP)
         
-        # App icon (PNG with white filter)
+        # App icon (microphone SVG)
         self.icon_label = QLabel()
-        self.icon_label.setFixedSize(18, 18)  # Slightly larger for visibility
+        self.icon_label.setFixedSize(Dimensions.LOGO_ICON_SIZE, Dimensions.LOGO_ICON_SIZE)
         self.icon_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         
         # Load app icon (PNG) with white color filter
@@ -159,27 +165,28 @@ class CompactLogoSection(QWidget):
                 
                 # Scale to desired size
                 scaled_pixmap = white_pixmap.scaled(
-                    18, 18,
+                    Dimensions.LOGO_ICON_SIZE, 
+                    Dimensions.LOGO_ICON_SIZE,
                     Qt.AspectRatioMode.KeepAspectRatio,
                     Qt.TransformationMode.SmoothTransformation
                 )
                 self.icon_label.setPixmap(scaled_pixmap)
             else:
                 # Fallback if pixmap couldn't be loaded
-                icon = IconLoader.load_icon("mic", 18, DarkTheme.SECONDARY_TEXT.name())
-                self.icon_label.setPixmap(icon.pixmap(18, 18))
+                icon = IconLoader.load_icon("mic", Dimensions.LOGO_ICON_SIZE, DarkTheme.SECONDARY_TEXT.name())
+                self.icon_label.setPixmap(icon.pixmap(Dimensions.LOGO_ICON_SIZE, Dimensions.LOGO_ICON_SIZE))
         else:
             # Fallback to mic icon
-            icon = IconLoader.load_icon("mic", 18, DarkTheme.SECONDARY_TEXT.name())
-            self.icon_label.setPixmap(icon.pixmap(18, 18))
+            icon = IconLoader.load_icon("mic", Dimensions.LOGO_ICON_SIZE, DarkTheme.SECONDARY_TEXT.name())
+            self.icon_label.setPixmap(icon.pixmap(Dimensions.LOGO_ICON_SIZE, Dimensions.LOGO_ICON_SIZE))
         
         layout.addWidget(self.icon_label)
         
         # App name
         self.name_label = QLabel("ASR Pro")
         font = QFont()
-        font.setPointSize(13)
-        font.setWeight(Fonts.MEDIUM)
+        font.setPointSize(Fonts.BASE_SIZE)
+        font.setWeight(Fonts.NORMAL)
         self.name_label.setFont(font)
         self.name_label.setStyleSheet(f"color: {DarkTheme.SECONDARY_TEXT.name()};")
         
@@ -187,8 +194,8 @@ class CompactLogoSection(QWidget):
         layout.addStretch()
 
 
-class CompactSidebar(QWidget):
-    """Completely remade compact sidebar widget."""
+class Sidebar(QWidget):
+    """Main sidebar widget with navigation."""
     
     page_requested = Signal(str)  # section_id
     window_action = Signal(str)   # "close", "minimize", "hide"
@@ -196,7 +203,7 @@ class CompactSidebar(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
         
-        self.navigation_items: List[CompactNavigationItem] = []
+        self.navigation_items: List[NavigationItem] = []
         self.current_section = "general"  # Default active section
         
         self._setup_ui()
@@ -210,7 +217,7 @@ class CompactSidebar(QWidget):
         
         # Header with traffic lights
         header_widget = QWidget()
-        header_widget.setFixedHeight(28)  # Compact header
+        header_widget.setFixedHeight(Dimensions.SIDEBAR_HEADER_HEIGHT)
         header_layout = QHBoxLayout(header_widget)
         header_layout.setContentsMargins(0, 0, 0, 0)
         
@@ -223,14 +230,14 @@ class CompactSidebar(QWidget):
         layout.addWidget(header_widget)
         
         # Logo section
-        self.logo_section = CompactLogoSection()
+        self.logo_section = LogoSection()
         layout.addWidget(self.logo_section)
         
-        # Main navigation (compact)
+        # Navigation list
         nav_container = QWidget()
         nav_layout = QVBoxLayout(nav_container)
-        nav_layout.setContentsMargins(0, 4, 0, 4)  # Minimal padding
-        nav_layout.setSpacing(1)  # Very small gap between items
+        nav_layout.setContentsMargins(0, Dimensions.SIDEBAR_PADDING_V, 0, 0)
+        nav_layout.setSpacing(2)  # Small gap between items
         
         # Create navigation items
         nav_items_data = [
@@ -242,24 +249,26 @@ class CompactSidebar(QWidget):
         ]
         
         for section_id, icon_name, text in nav_items_data:
-            item = CompactNavigationItem(section_id, icon_name, text)
+            item = NavigationItem(section_id, icon_name, text)
             item.clicked.connect(self._on_navigation_clicked)
             self.navigation_items.append(item)
             nav_layout.addWidget(item)
         
-        layout.addWidget(nav_container)
+        layout.addWidget(nav_container, 1)  # Take remaining space
         
-        # Add stretch to push footer to bottom
-        layout.addStretch()
-        
-        # Footer section (compact)
+        # Footer section
         footer_container = QWidget()
         footer_layout = QVBoxLayout(footer_container)
-        footer_layout.setContentsMargins(0, 4, 0, 8)  # Small padding
-        footer_layout.setSpacing(1)  # Small gap
+        footer_layout.setContentsMargins(0, Dimensions.SIDEBAR_PADDING_V, 0, Dimensions.SIDEBAR_PADDING_V)
+        footer_layout.setSpacing(2)  # Small gap between footer items
+        
+        # About item (duplicate in footer)
+        self.about_footer = NavigationItem("about", "info", "About ASR Pro")
+        self.about_footer.clicked.connect(self._on_navigation_clicked)
+        footer_layout.addWidget(self.about_footer)
         
         # Exit item
-        self.exit_item = CompactNavigationItem("exit", "power", "Exit")
+        self.exit_item = NavigationItem("exit", "power", "Exit")
         self.exit_item.clicked.connect(lambda: self.window_action.emit("close"))
         footer_layout.addWidget(self.exit_item)
         
@@ -270,9 +279,13 @@ class CompactSidebar(QWidget):
     
     def _apply_styles(self):
         """Apply sidebar styling."""
-        self.setFixedWidth(240)
+        self.setFixedWidth(Dimensions.SIDEBAR_WIDTH)
         # Use transparent background to allow custom paint event
-        self.setStyleSheet("CompactSidebar { background-color: transparent; }")
+        self.setStyleSheet(f"""
+            Sidebar {{
+                background-color: transparent;
+            }}
+        """)
     
     def _on_navigation_clicked(self, section_id: str):
         """Handle navigation item clicks."""
@@ -291,6 +304,9 @@ class CompactSidebar(QWidget):
         # Update main navigation items
         for item in self.navigation_items:
             item.set_active(item.section_id == section_id)
+        
+        # Update footer about item
+        self.about_footer.set_active(section_id == "about")
     
     def paintEvent(self, event):
         """Custom paint event for translucent Mac-like background."""
