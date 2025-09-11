@@ -30,7 +30,6 @@
 - Keep PRs focused; update README/AGENTS.md when behavior or commands change.
 
 ## Security & Configuration Tips
-- Config lives at `~/.asrpro/config.json` (created on first run). Avoid committing local config.
+- Config lives at `config/config.json` in the project (created on first run). The app migrates from legacy `~/.asrpro/config.json` if found.
 - Default server binds `127.0.0.1:7341`. Do not expose publicly without a reverse proxy and auth.
-- Single‑instance lock: `~/.asrpro.lock`. If the app crashes, it is safe to delete this file.
-
+- Single‑instance lock: `config/asrpro.lock`. If the app crashes, it is safe to delete this file.
