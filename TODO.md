@@ -21,11 +21,13 @@ Tasks and improvements for the ASR Pro application.
 - [x] **Dark mode** - Implemented proper dark mode detection for macOS
 - [x] **Model loading** - Added MPS (Metal) support for Apple Silicon
 
+### Core Functionality
+- [x] **Audio recording** - Test sounddevice on macOS with different device selection
+- [x] **Microphone permissions** - Add proper microphone permission handling for macOS
+
 ## 🚀 Priority Tasks
 
 ### 1. Core Functionality
-- [ ] **Audio recording** - Test sounddevice on macOS with different device selection
-- [ ] **Microphone permissions** - Add proper microphone permission handling for macOS
 - [ ] **File dialogs** - Ensure QFileDialog shows native macOS picker properly
 
 ### 2. macOS Integration
@@ -46,7 +48,7 @@ Tasks and improvements for the ASR Pro application.
 ## 📝 Documentation & Testing
 
 ### 1. Testing
-- [ ] **Expand test coverage** - Add more comprehensive tests
+- [x] **Expand test coverage** - Add more comprehensive tests
 - [ ] **Integration tests** - Add tests for model loading and transcription
 - [ ] **Performance tests** - Add benchmarks for different models
 
@@ -107,4 +109,3 @@ asrpro/
 ├── setup.py          # Backward compatibility & py2app
 ├── requirements.txt  # Core dependencies
 └── requirements-macos.txt  # macOS-specific deps
-```
