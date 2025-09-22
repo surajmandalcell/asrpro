@@ -13,8 +13,8 @@ from utils.audio_converter import convert_to_wav
 logger = logging.getLogger(__name__)
 
 
-class WhisperBaseLoader(BaseLoader):
-    """ONNX loader for Whisper Base model with multiple backend support."""
+class WhisperTinyLoader(BaseLoader):
+    """ONNX loader for Whisper Tiny model with multiple backend support."""
 
     def __init__(self, model_id: str, config: Dict[str, Any]):
         super().__init__(model_id, config)
@@ -22,7 +22,7 @@ class WhisperBaseLoader(BaseLoader):
         self.current_backend = None
 
     async def load(self) -> bool:
-        """Load the ONNX Whisper Base model."""
+        """Load the ONNX Whisper Tiny model."""
         try:
             import onnx_asr
 
@@ -30,7 +30,7 @@ class WhisperBaseLoader(BaseLoader):
             backend = self.config.get("backend", "auto")
 
             logger.info(
-                f"Loading ONNX Whisper {self.model_id} model on {device} with {backend} backend"
+                f"Loading ONNX Whisper whisper-tiny model on {device} with {backend} backend"
             )
 
             # Disable TensorRT to avoid nvinfer_10.dll issues
@@ -40,13 +40,9 @@ class WhisperBaseLoader(BaseLoader):
             # Map model IDs to onnx-asr model names
             model_mapping = {
                 "whisper-tiny": "whisper-tiny",
-                "whisper-base": "whisper-base",
-                "whisper-small": "whisper-small",
-                "whisper-medium": "whisper-medium",
-                "whisper-large": "whisper-large",
             }
 
-            onnx_model_name = model_mapping.get(self.model_id, "whisper-base")
+            onnx_model_name = model_mapping.get(self.model_id, "whisper-tiny")
 
             # Load ONNX model with explicit providers to avoid TensorRT
             providers = ["CUDAExecutionProvider", "CPUExecutionProvider"]
@@ -57,7 +53,7 @@ class WhisperBaseLoader(BaseLoader):
 
             self.is_loaded = True
             logger.info(
-                f"ONNX Whisper {self.model_id} model loaded successfully on {device} ({backend})"
+                f"ONNX Whisper Tiny model loaded successfully on {device} ({backend})"
             )
             return True
 
@@ -66,11 +62,11 @@ class WhisperBaseLoader(BaseLoader):
             logger.error("Install with: pip install onnx-asr[gpu,hub]")
             return False
         except Exception as e:
-            logger.error(f"Failed to load ONNX Whisper Base model: {e}")
+            logger.error(f"Failed to load ONNX Whisper Tiny model: {e}")
             return False
 
     async def unload(self) -> bool:
-        """Unload the ONNX Whisper Base model."""
+        """Unload the ONNX Whisper Tiny model."""
         try:
             if self.whisper_model:
                 del self.whisper_model
@@ -78,11 +74,11 @@ class WhisperBaseLoader(BaseLoader):
 
             self.is_loaded = False
             self.current_backend = None
-            logger.info("ONNX Whisper Base model unloaded successfully")
+            logger.info("ONNX Whisper Tiny model unloaded successfully")
             return True
 
         except Exception as e:
-            logger.error(f"Failed to unload ONNX Whisper Base model: {e}")
+            logger.error(f"Failed to unload ONNX Whisper Tiny model: {e}")
             return False
 
     async def transcribe_cuda(self, audio_file: BinaryIO) -> Dict[str, Any]:
@@ -123,7 +119,7 @@ class WhisperBaseLoader(BaseLoader):
                     os.unlink(wav_path)
 
         except Exception as e:
-            logger.error(f"Failed to transcribe with ONNX Whisper Base (CUDA): {e}")
+            logger.error(f"Failed to transcribe with ONNX Whisper Tiny (CUDA): {e}")
             raise
 
     async def transcribe_vulkan(self, audio_file: BinaryIO) -> Dict[str, Any]:
@@ -164,7 +160,7 @@ class WhisperBaseLoader(BaseLoader):
                     os.unlink(wav_path)
 
         except Exception as e:
-            logger.error(f"Failed to transcribe with ONNX Whisper Base (Vulkan): {e}")
+            logger.error(f"Failed to transcribe with ONNX Whisper Tiny (Vulkan): {e}")
             raise
 
     async def transcribe_cpu(self, audio_file: BinaryIO) -> Dict[str, Any]:
@@ -205,7 +201,7 @@ class WhisperBaseLoader(BaseLoader):
                     os.unlink(wav_path)
 
         except Exception as e:
-            logger.error(f"Failed to transcribe with ONNX Whisper Base (CPU): {e}")
+            logger.error(f"Failed to transcribe with ONNX Whisper Tiny (CPU): {e}")
             raise
 
     async def transcribe(self, audio_file: BinaryIO) -> Dict[str, Any]:
