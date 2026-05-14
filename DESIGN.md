@@ -209,7 +209,7 @@ The palette is built from dark graphite neutrals with a few purposeful accents.
 - **Blue (#0A84FF):** Active playback or selected confirmation. Use sparingly.
 - **Orange (#FF7A32):** Home icon accent only.
 - **Purple (#7167FF):** History icon accent only.
-- **Teal (#92C2C6):** About and product identity accent.
+- **Teal (#92C2C6):** Product identity accent for the logo mark and About content, not for the sidebar icon.
 - **Error (#FF9C8F):** Recording and device errors.
 
 Do not use pure white borders. Dividers should feel like tonal changes within the dark surface, using `divider` or low-opacity white equivalents. Do not create multiple nested cards by stacking bright outlines inside panels.
@@ -268,7 +268,7 @@ Do not mix sharp rectangular controls with rounded grouped panels in the same vi
 
 **App Shell:** The shell is fixed-size and non-resizable. It has a left sidebar, a top toolbar, and a scrollable content region. The frame is custom, with close and minimize traffic lights only.
 
-**Sidebar Navigation:** Items are 36px high with 20px icon tiles and compact labels. The active state uses `sidebar-active` and white text. Icons carry restrained per-section accents.
+**Sidebar Navigation:** Items are 36px high with 20px icon tiles and compact labels. The active state uses `sidebar-active` and white text. Most icons use neutral gray tiles. Home and History may keep their section accents, but About stays neutral.
 
 **Grouped Panels:** Panels use `panel` styling: dark tonal fill, 22px radius, clipped overflow, and tonal dividers. Use rows inside a panel instead of nested cards.
 
