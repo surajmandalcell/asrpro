@@ -33,6 +33,9 @@ colors:
   status-warning: "#FFB3AA"
   logo-surface: "#F6F4EF"
   logo-ink: "#26343B"
+  icon-glass: "#B9DDE0"
+  icon-glass-accent: "#92C2C6"
+  icon-warm-highlight: "#FFD38E"
   window-close: "#FF5F57"
   window-close-glyph: "#6E140F"
   window-minimize: "#FEBC2E"
@@ -195,6 +198,12 @@ The product is not a marketing site and should never use a hero layout, promotio
 
 The visual personality is graphite, local-first, and precise. Use familiar macOS cues where they help: traffic lights, a left navigation rail, soft grouped surfaces, subtle blur, small type, and icon-led controls. Avoid exposing implementation details such as framework names, runtime stacks, or internal architecture in the UI.
 
+## App Icon
+
+The app icon follows the macOS 26 Liquid Glass direction while staying recognizable as ASR Pro: a centered speech-loop mark, layered depth, translucent teal glass, and no text. The production source is `src/assets/asrpro-app-icon.svg`, with raster exports in `src/assets/asrpro-app-icon.png`, `src/assets/asrpro-app-icon.icns`, `src/assets/asrpro-app-icon.ico`, and `src/assets/linux-icons/*.png`. Windows tray glyphs use dedicated `.ico` files while macOS and Linux tray glyphs use PNG assets.
+
+Use a 1024x1024 source canvas and keep the primary shape centered inside the macOS safe area. The legacy Electron outputs may include the rounded app tile, but the visual construction should stay layer-friendly: simple background plane, foreground ribbon mark, subtle glass rim, and appearance variants that still read in light or dark contexts.
+
 ## Colors
 
 The palette is built from dark graphite neutrals with a few purposeful accents.
@@ -210,6 +219,8 @@ The palette is built from dark graphite neutrals with a few purposeful accents.
 - **Orange (#FF7A32):** Home icon accent only.
 - **Purple (#7167FF):** History icon accent only.
 - **Teal (#92C2C6):** Product identity accent for the logo mark and About content, not for the sidebar icon.
+- **Icon glass (#B9DDE0):** Light app icon depth and Liquid Glass-style surface.
+- **Icon warm highlight (#FFD38E):** Subtle ambient warmth only in the app icon, never a broad UI accent.
 - **Error (#FF9C8F):** Recording and device errors.
 
 Do not use pure white borders. Dividers should feel like tonal changes within the dark surface, using `divider` or low-opacity white equivalents. Do not create multiple nested cards by stacking bright outlines inside panels.
