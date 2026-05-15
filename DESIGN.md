@@ -31,11 +31,11 @@ colors:
   accent-teal: "#92C2C6"
   status-error: "#FF9C8F"
   status-warning: "#FFB3AA"
-  logo-surface: "#F6F4EF"
+  logo-surface: "#7D8B91"
   logo-ink: "#26343B"
-  icon-glass: "#B9DDE0"
-  icon-glass-accent: "#92C2C6"
-  icon-warm-highlight: "#FFD38E"
+  icon-glass: "#B4BEC2"
+  icon-glass-accent: "#7D8B91"
+  icon-warm-highlight: "#56646A"
   window-close: "#FF5F57"
   window-close-glyph: "#6E140F"
   window-minimize: "#FEBC2E"
@@ -200,7 +200,7 @@ The visual personality is graphite, local-first, and precise. Use familiar macOS
 
 ## App Icon
 
-The app icon follows the macOS 26 Liquid Glass direction while staying recognizable as ASR Pro: a centered speech-loop mark, layered depth, translucent teal glass, and no text. The production source is `src/assets/asrpro-app-icon.svg`, with raster exports in `src/assets/asrpro-app-icon.png`, `src/assets/asrpro-app-icon.icns`, `src/assets/asrpro-app-icon.ico`, and `src/assets/linux-icons/*.png`. Windows tray glyphs use dedicated `.ico` files while macOS and Linux tray glyphs use PNG assets.
+The app icon follows the selected Blue Titanium direction while staying recognizable as ASR Pro: a centered speech-loop mark, a simple `#b4bec2` to `#7d8b91` to `#56646a` background, and no text. The production source is `src/assets/asrpro-app-icon.svg`, with raster exports in `src/assets/asrpro-app-icon.png`, `src/assets/asrpro-app-icon.icns`, `src/assets/asrpro-app-icon.ico`, and `src/assets/linux-icons/*.png`. Windows tray glyphs use dedicated `.ico` files while macOS and Linux tray glyphs use PNG assets.
 
 Use a 1024x1024 source canvas and keep the primary shape centered inside the macOS safe area. The legacy Electron outputs may include the rounded app tile, but the visual construction should stay layer-friendly: simple background plane, foreground ribbon mark, subtle glass rim, and appearance variants that still read in light or dark contexts.
 
