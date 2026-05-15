@@ -31,11 +31,11 @@ colors:
   accent-teal: "#92C2C6"
   status-error: "#FF9C8F"
   status-warning: "#FFB3AA"
-  logo-surface: "#B3BBB9"
-  logo-ink: "#26343B"
-  icon-glass: "#D5DAD8"
-  icon-glass-accent: "#B3BBB9"
-  icon-warm-highlight: "#879190"
+  logo-surface: "#10171D"
+  logo-ink: "#EEF4F5"
+  icon-glass: "#20272D"
+  icon-glass-accent: "#10171D"
+  icon-shadow: "#04070A"
   window-close: "#FF5F57"
   window-close-glyph: "#6E140F"
   window-minimize: "#FEBC2E"
@@ -200,7 +200,7 @@ The visual personality is graphite, local-first, and precise. Use familiar macOS
 
 ## App Icon
 
-The app icon follows the selected Light Glass direction while staying recognizable as ASR Pro: a centered speech-loop mark, a simple `#d5dad8` to `#b3bbb9` to `#879190` background, and no text. The production source is `src/assets/asrpro-app-icon.svg`, with raster exports in `src/assets/asrpro-app-icon.png`, `src/assets/asrpro-app-icon.icns`, `src/assets/asrpro-app-icon.ico`, and `src/assets/linux-icons/*.png`. Windows tray glyphs use dedicated `.ico` files while macOS and Linux tray glyphs use PNG assets.
+The app icon follows the selected Ink Slate direction while staying recognizable as ASR Pro: a centered speech-loop mark, a simple `#20272d` to `#10171d` to `#04070a` background, and no text. The production source is `src/assets/asrpro-app-icon.svg`, with raster exports in `src/assets/asrpro-app-icon.png`, `src/assets/asrpro-app-icon.icns`, `src/assets/asrpro-app-icon.ico`, and `src/assets/linux-icons/*.png`. Windows tray glyphs use dedicated `.ico` files while macOS and Linux tray glyphs use PNG assets.
 
 Use a 1024x1024 source canvas and keep the rounded tile inset inside the canvas so the Dock footprint matches standard macOS icon sizing. The legacy Electron outputs may include the rounded app tile, but the visual construction should stay layer-friendly: simple background plane, foreground ribbon mark, subtle glass rim, and appearance variants that still read in light or dark contexts.
 
@@ -219,8 +219,9 @@ The palette is built from dark graphite neutrals with a few purposeful accents.
 - **Orange (#FF7A32):** Home icon accent only.
 - **Purple (#7167FF):** History icon accent only.
 - **Teal (#92C2C6):** Product identity accent for the logo mark and About content, not for the sidebar icon.
-- **Icon glass (#B9DDE0):** Light app icon depth and Liquid Glass-style surface.
-- **Icon warm highlight (#FFD38E):** Subtle ambient warmth only in the app icon, never a broad UI accent.
+- **Icon glass (#20272D):** Ink Slate top surface for the app icon.
+- **Icon glass accent (#10171D):** Dark middle tone for the app icon.
+- **Icon shadow (#04070A):** Low-brightness base for the app icon.
 - **Error (#FF9C8F):** Recording and device errors.
 
 Do not use pure white borders. Dividers should feel like tonal changes within the dark surface, using `divider` or low-opacity white equivalents. Do not create multiple nested cards by stacking bright outlines inside panels.
