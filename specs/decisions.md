@@ -161,7 +161,9 @@ decision, add it here in the same change (D-26).
   `updates.dismissedVersion`, `migrations.legacyLocalStorage`) cannot be
   set from the renderer. The renderer reads the old `asrpro.selectedModel`
   and `asrpro.audioInputDevice` localStorage keys and hands them to
-  `settings:import-legacy` once; the keys stay in place.
+  `settings:import-legacy` once; the keys stay in place. The first call sets
+  `migrations.legacyLocalStorage` even when no value is accepted, and the
+  renderer skips the call when the marker is already set.
 - **D-37 IPC contract.** The preload exposes only `invoke`, `send`, and
   `on`, limited to the channels in `shared/ipc-channels.json` (a drift test
   compares the lists). Every handler checks the sender window and the
