@@ -49,6 +49,13 @@ ASR Pro
 - **model**: a speech model (Whisper, roles final or live) or a speaker
   model (segmentation or embedding). Every model has a pinned hash and
   downloads only when the user asks.
+- **settings registry**: the main-process owner of `config/settings.json`.
+  It validates values against one schema, writes atomically, keeps unknown
+  keys, and migrates the legacy settings files and localStorage keys.
+- **error code**: a stable name from `shared/error-codes.json` that
+  crosses IPC instead of text. The renderer maps a code to a message.
+- **error log**: `logs/asrpro.log`, a local rotating file of engine, IPC,
+  and migration errors. It never holds transcript text or audio.
 - **data folder**: the root of all app data. Its location depends on the
   build type (D-20); the UI shows it as `~/...` when it is under the user
   home.

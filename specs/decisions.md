@@ -149,3 +149,32 @@ decision, add it here in the same change (D-26).
   auto-paste into other apps, light theme, VAD as a user feature, mic
   processing options, word-level highlight (segment highlight is in
   scope).
+- **D-36 Settings and IPC foundation.** `settings.json` is
+  `{schemaVersion: 2, values}` with flat dotted keys; keys this build does
+  not know stay under `values._unknown` and survive every save. Each write
+  is atomic (temp file, fsync, rename). A file that is not valid JSON or
+  has the wrong shape is renamed to `settings.json.corrupt-<ms>`, defaults
+  are written, and the log records it. Legacy `app-settings.json` and
+  `overlay-settings.json` are read only when `settings.json` is missing,
+  then renamed to `*.migrated`. Internal keys (`overlay.customBounds`,
+  `startup.executablePath`, `updates.lastCheckAt`,
+  `updates.dismissedVersion`, `migrations.legacyLocalStorage`) cannot be
+  set from the renderer. The renderer reads the old `asrpro.selectedModel`
+  and `asrpro.audioInputDevice` localStorage keys and hands them to
+  `settings:import-legacy` once; the keys stay in place.
+- **D-37 IPC contract.** The preload exposes only `invoke`, `send`, and
+  `on`, limited to the channels in `shared/ipc-channels.json` (a drift test
+  compares the lists). Every handler checks the sender window and the
+  payload, and replies `{ok: true, value}` or `{ok: false, error: {code,
+  params?, detail?}}` with a code from `shared/error-codes.json`. The
+  renderer turns the reply into an `AppError` in `src/lib/bridge.ts` and
+  picks the message from the code; English error text is never matched.
+- **D-38 Error log.** `logs/asrpro.log` rotates at 2 MB and keeps 3 files.
+  It records engine, IPC, and migration errors as timestamp, level, scope,
+  code, and a detail capped at 500 characters. Validation messages name the
+  failing field, never its value. Transcript text and audio never reach the
+  log.
+- **D-39 Linux window flags.** Electron ignores `setMaximizable` on Linux
+  and `isMaximizable()` always answers true. The main window overrides
+  `isMaximizable` to report false there; the window still cannot be
+  maximized (not resizable, `maximize` is undone).
