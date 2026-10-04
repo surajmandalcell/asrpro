@@ -56,6 +56,10 @@ ASR Pro
   crosses IPC instead of text. The renderer maps a code to a message.
 - **error log**: `logs/asrpro.log`, a local rotating file of engine, IPC,
   and migration errors. It never holds transcript text or audio.
+- **open target**: a name (`repo`, `issues`, `releases`, `data-folder`,
+  `log-folder`) the renderer sends over `shell:open`. Main maps it to an
+  allow-listed GitHub URL or a folder. The renderer never sends a URL or a
+  path.
 - **data folder**: the root of all app data. Its location depends on the
   build type (D-20); the UI shows it as `~/...` when it is under the user
   home.

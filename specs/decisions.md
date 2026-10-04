@@ -178,3 +178,19 @@ decision, add it here in the same change (D-26).
   and `isMaximizable()` always answers true. The main window overrides
   `isMaximizable` to report false there; the window still cannot be
   maximized (not resizable, `maximize` is undone).
+- **D-40 Security baseline on `file://`.** The sender check also compares
+  the frame URL with the app URL (the built `dist/index.html`, or
+  `VITE_DEV_SERVER_URL` when not packaged); the overlay role accepts only
+  its `data:text/html` page. One `web-contents-created` guard blocks
+  `will-navigate`, `will-frame-navigate`, `will-redirect`, and
+  `will-attach-webview` for every URL except the app page, and denies every
+  `window.open`. External pages and folders open only through the
+  `shell:open` targets `repo`, `issues` (the new-issue form), `releases`,
+  `data-folder`, and `log-folder`; `openExternal` accepts only
+  `https://github.com/surajmandalcell/asrpro` and below. Both windows
+  share `secureWebPreferences` (sandbox, context isolation, no Node). The
+  production CSP meta tag comes from a build-only Vite plugin; the overlay
+  data URL carries `default-src 'none'` with a sha256 of its inline script.
+  Saved 1.x history audio (data URLs) plays through a blob URL because the
+  CSP has no `data:` in `media-src`. A file dropped outside a drop zone is
+  cancelled in the renderer, and the navigation guard backs it up.
