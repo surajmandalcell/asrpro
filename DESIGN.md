@@ -1,100 +1,79 @@
 ---
 version: alpha
-name: ASR Pro Desktop
-description: Quiet macOS-style desktop design system for private speech recognition and transcription workflows.
+name: Hushpen Desktop
+description: Native macOS-style desktop design system for private speech recognition and transcription, with Light and Dark appearances.
 colors:
-  background: "#2F2F2F"
-  background-raised: "#333333"
-  sidebar: "#3C3C3C"
-  sidebar-active: "#686868"
-  surface: "#3A3A3A"
-  surface-soft: "#383838"
-  surface-control: "#303030"
-  surface-control-hover: "#3A3A3A"
-  surface-row-hover: "#424242"
-  surface-selected: "#5A5A5A"
-  surface-elevated: "#2B2B2B"
-  border: "#3F3F3F"
-  border-sidebar: "#545454"
-  border-control: "#5C5C5C"
-  divider: "#474747"
-  text-primary: "#EEEEEE"
-  text-heading: "#F4F4F4"
-  text-body: "#CFCFCF"
-  text-muted: "#A8A8A8"
-  text-subtle: "#8E8E8E"
-  text-disabled: "#8A8A8A"
-  focus: "#9BCFFF"
-  accent-blue: "#0A84FF"
-  accent-orange: "#FF7A32"
-  accent-purple: "#7167FF"
-  accent-teal: "#92C2C6"
-  status-error: "#FF9C8F"
-  status-warning: "#FFB3AA"
-  logo-surface: "#10171D"
-  logo-ink: "#EEF4F5"
-  icon-glass: "#20272D"
-  icon-glass-accent: "#10171D"
-  icon-shadow: "#04070A"
+  dark-content: "#1E1E1E"
+  dark-sidebar: "#2B2B2D"
+  dark-group: "#FFFFFF0D"
+  dark-selection: "#FFFFFF1A"
+  dark-control: "#FFFFFF1F"
+  dark-label: "#FFFFFFD9"
+  dark-label-secondary: "#FFFFFF8C"
+  dark-label-tertiary: "#FFFFFF40"
+  dark-separator: "#FFFFFF1A"
+  dark-accent: "#0A84FF"
+  dark-success: "#30D158"
+  dark-warning: "#FF9F0A"
+  dark-error: "#FF453A"
+  light-content: "#F5F5F5"
+  light-sidebar: "#E8E8EA"
+  light-group: "#00000009"
+  light-selection: "#00000017"
+  light-control: "#00000014"
+  light-label: "#000000D9"
+  light-label-secondary: "#00000080"
+  light-label-tertiary: "#00000042"
+  light-separator: "#0000001A"
+  light-accent: "#007AFF"
+  light-success: "#34C759"
+  light-warning: "#FF9500"
+  light-error: "#FF3B30"
+  on-accent: "#FFFFFF"
   window-close: "#FF5F57"
   window-close-glyph: "#6E140F"
   window-minimize: "#FEBC2E"
   window-minimize-glyph: "#8F5B00"
 typography:
-  display-md:
-    fontFamily: "Inter, -apple-system, BlinkMacSystemFont, SF Pro Text, Segoe UI, sans-serif"
-    fontSize: 24px
-    fontWeight: 600
-    lineHeight: 1.17
+  title:
+    fontFamily: ".SystemUIFont on macOS, Inter on Linux"
+    fontSize: 22px
+    fontWeight: 700
+    lineHeight: 1.2
     letterSpacing: 0em
-  title-md:
-    fontFamily: "Inter, -apple-system, BlinkMacSystemFont, SF Pro Text, Segoe UI, sans-serif"
-    fontSize: 15px
+  toolbar-title:
+    fontFamily: ".SystemUIFont on macOS, Inter on Linux"
+    fontSize: 13px
     fontWeight: 600
     lineHeight: 1
     letterSpacing: 0em
-  row-title:
-    fontFamily: "Inter, -apple-system, BlinkMacSystemFont, SF Pro Text, Segoe UI, sans-serif"
-    fontSize: 14px
-    fontWeight: 600
-    lineHeight: 1.43
+  body:
+    fontFamily: ".SystemUIFont on macOS, Inter on Linux"
+    fontSize: 13px
+    fontWeight: 400
+    lineHeight: 1.3
     letterSpacing: 0em
-  body-md:
-    fontFamily: "Inter, -apple-system, BlinkMacSystemFont, SF Pro Text, Segoe UI, sans-serif"
+  button:
+    fontFamily: ".SystemUIFont on macOS, Inter on Linux"
     fontSize: 13px
     fontWeight: 500
-    lineHeight: 1.54
-    letterSpacing: 0em
-  body-sm:
-    fontFamily: "Inter, -apple-system, BlinkMacSystemFont, SF Pro Text, Segoe UI, sans-serif"
-    fontSize: 12px
-    fontWeight: 500
-    lineHeight: 1.67
-    letterSpacing: 0em
-  label-md:
-    fontFamily: "Inter, -apple-system, BlinkMacSystemFont, SF Pro Text, Segoe UI, sans-serif"
-    fontSize: 12px
-    fontWeight: 600
     lineHeight: 1
     letterSpacing: 0em
-  label-caps:
-    fontFamily: "Inter, -apple-system, BlinkMacSystemFont, SF Pro Text, Segoe UI, sans-serif"
+  secondary:
+    fontFamily: ".SystemUIFont on macOS, Inter on Linux"
     fontSize: 11px
-    fontWeight: 600
-    lineHeight: 1.82
+    fontWeight: 400
+    lineHeight: 1.3
     letterSpacing: 0em
 rounded:
   none: 0px
-  xs: 5px
-  sm: 7px
-  nav: 9px
-  control: 10px
-  md: 12px
+  button: 5px
+  selection: 6px
+  group: 8px
   app-icon: 16px
-  panel: 22px
   full: 9999px
 spacing:
-  hairline: 1px
+  hairline: 0.5px
   xxs: 2px
   xs: 4px
   sm: 8px
@@ -103,78 +82,52 @@ spacing:
   xl: 20px
   "2xl": 24px
   "3xl": 32px
-  sidebar-width: 208px
-  content-max-width: 520px
+  sidebar-width: 232px
+  sidebar-top: 48px
+  toolbar-height: 52px
+  onboarding-width: 640px
   window-width: 940px
   window-height: 600px
-  toolbar-height: 34px
-  sidebar-title-height: 48px
 components:
   app-window:
-    backgroundColor: "{colors.background}"
-    textColor: "{colors.text-primary}"
+    backgroundColor: "{colors.dark-content}"
+    textColor: "{colors.dark-label}"
     width: "{spacing.window-width}"
     height: "{spacing.window-height}"
   sidebar:
-    backgroundColor: "{colors.sidebar}"
-    textColor: "{colors.text-body}"
+    backgroundColor: "{colors.dark-sidebar}"
     width: "{spacing.sidebar-width}"
-    borderColor: "{colors.border-sidebar}"
-  nav-item:
-    typography: "{typography.body-md}"
-    rounded: "{rounded.nav}"
-    height: 36px
-    padding: 10px
-    textColor: "{colors.text-body}"
-  nav-item-active:
-    backgroundColor: "{colors.sidebar-active}"
-    textColor: "{colors.text-primary}"
-  panel:
-    backgroundColor: "{colors.surface}"
-    borderColor: "{colors.divider}"
-    rounded: "{rounded.panel}"
-    padding: 20px
-  panel-divider:
-    borderColor: "{colors.divider}"
-    size: 1px
-  button-panel:
-    backgroundColor: "{colors.surface-control}"
-    textColor: "{colors.text-primary}"
-    borderColor: "{colors.border-control}"
-    rounded: "{rounded.md}"
-    height: 32px
-    padding: 10px
-    typography: "{typography.label-md}"
-  button-panel-hover:
-    backgroundColor: "{colors.surface-control-hover}"
-  dropdown-surface:
-    backgroundColor: "{colors.surface-control}"
-    borderColor: "{colors.border-control}"
-    rounded: "{rounded.md}"
-    padding: 4px
-  dropdown-option:
-    rounded: "{rounded.control}"
-    padding: 10px
-    typography: "{typography.label-md}"
-  dropdown-option-selected:
-    backgroundColor: "{colors.surface-selected}"
-    textColor: "{colors.text-primary}"
-  segmented-control:
-    backgroundColor: "{colors.surface-elevated}"
-    borderColor: "{colors.divider}"
-    rounded: "{rounded.md}"
-    padding: 2px
-  segmented-item:
-    rounded: "{rounded.control}"
+  sidebar-row:
+    typography: "{typography.body}"
+    rounded: "{rounded.selection}"
     height: 28px
-    typography: "{typography.label-md}"
-  icon-tile:
-    backgroundColor: "{colors.surface-soft}"
-    textColor: "{colors.text-body}"
-    rounded: "{rounded.md}"
-    size: 28px
+    padding: 8px
+  sidebar-row-selected:
+    backgroundColor: "{colors.dark-selection}"
+    textColor: "{colors.dark-label}"
+  sidebar-icon:
+    size: 16px
+    textColor: "{colors.dark-label-secondary}"
+  group:
+    backgroundColor: "{colors.dark-group}"
+    borderColor: "{colors.dark-separator}"
+    rounded: "{rounded.group}"
+  row:
+    typography: "{typography.body}"
+    minHeight: 36px
+    padding: 10px
+  button:
+    typography: "{typography.button}"
+    backgroundColor: "{colors.dark-control}"
+    textColor: "{colors.dark-label}"
+    rounded: "{rounded.button}"
+    height: 22px
+    padding: 12px
+  button-default:
+    backgroundColor: "{colors.dark-accent}"
+    textColor: "{colors.on-accent}"
   focus-ring:
-    borderColor: "{colors.focus}"
+    borderColor: "{colors.dark-accent}"
     size: 2px
   traffic-light-close:
     backgroundColor: "{colors.window-close}"
@@ -188,127 +141,116 @@ components:
     rounded: "{rounded.full}"
 ---
 
-# ASR Pro Design System
+# Hushpen Design System
 
 ## Overview
 
-ASR Pro is a quiet, fixed-size desktop workspace for private dictation, file transcription, local model selection, and playback. It should feel native to macOS, focused, and workmanlike: a compact utility that stays out of the way while still feeling carefully finished.
+Hushpen is a quiet, fixed-size desktop workspace for private dictation, file transcription, local model selection, and playback. It follows the system: it looks like a native macOS app, in Light or Dark, and it stays out of the way.
 
-The product is not a marketing site and should never use a hero layout, promotional panels, or oversized decorative compositions. The first screen should be the working app. Layouts should be dense enough for repeated daily use, but calm enough that recording and transcription states remain legible.
+The product is not a marketing site. It has no hero layout, no promotional panels, and no decorative compositions. The first screen is the working app. Layouts are dense enough for daily use and calm enough that recording and transcription states stay easy to read.
 
-The visual personality is graphite, local-first, and precise. Use familiar macOS cues where they help: traffic lights, a left navigation rail, soft grouped surfaces, subtle blur, small type, and icon-led controls. Avoid exposing implementation details such as framework names, runtime stacks, or internal architecture in the UI.
+The look is neutral and uses very few colors. Gray fills, one blue accent, and a status color only on status words. Avoid exposing implementation details such as framework names or internal architecture in the UI.
 
 ## App Icon
 
-The app icon follows the selected Ink Slate direction while staying recognizable as ASR Pro: a centered speech-loop mark, a simple `#20272d` to `#10171d` to `#04070a` background, and no text. The production source is `src/assets/asrpro-app-icon.svg`, with raster exports in `src/assets/asrpro-app-icon.png`, `src/assets/asrpro-app-icon.icns`, `src/assets/asrpro-app-icon.ico`, and `src/assets/linux-icons/*.png`. Windows tray glyphs use dedicated `.ico` files while macOS and Linux tray glyphs use PNG assets.
+The app icon follows the selected Ink Slate direction while staying recognizable as Hushpen: a centered speech-loop mark, a simple `#20272d` to `#10171d` to `#04070a` background, and no text. The production source is `src/assets/asrpro-app-icon.svg`, with raster exports in `src/assets/asrpro-app-icon.png`, `src/assets/asrpro-app-icon.icns`, `src/assets/asrpro-app-icon.ico`, and `src/assets/linux-icons/*.png`. Windows tray glyphs use dedicated `.ico` files while macOS and Linux tray glyphs use PNG assets.
 
-Use a 1024x1024 source canvas and keep the rounded tile inset inside the canvas so the Dock footprint matches standard macOS icon sizing. The legacy Electron outputs may include the rounded app tile, but the visual construction should stay layer-friendly: simple background plane, foreground ribbon mark, subtle glass rim, and appearance variants that still read in light or dark contexts.
+Use a 1024x1024 source canvas and keep the rounded tile inset inside the canvas so the Dock footprint matches standard macOS icon sizing. The visual construction stays layer-friendly: simple background plane, foreground ribbon mark, subtle glass rim, and appearance variants that still read in light or dark contexts.
+
+## Appearance
+
+The app follows the system appearance, Light or Dark, and changes live when the system setting changes, with no restart. Every view reads its colors from one palette for the current appearance. If the appearance is unknown (Linux without a desktop setting), the app uses Dark.
+
+The flow bar pill is the one exception. It stays a dark HUD (`#2B2B2B`, light text) in both appearances, because it floats over other apps.
 
 ## Colors
 
-The palette is built from dark graphite neutrals with a few purposeful accents.
+All colors are neutral grays plus one accent. Tokens come in a Dark and a Light set.
 
-- **Background (#2F2F2F):** The app shell background. It should feel steady and quiet, never pure black.
-- **Sidebar (#3C3C3C):** The navigation rail. It is slightly lifted from the app background and uses muted text.
-- **Surface (#3A3A3A):** Grouped content panels. Surfaces should be translucent or tonal, not bright cards.
-- **Control (#303030):** Buttons, dropdowns, and compact input-like controls.
-- **Text primary (#EEEEEE):** Main readable text on dark surfaces.
-- **Text muted (#A8A8A8):** Section headings, captions, and secondary information.
-- **Focus (#9BCFFF):** Keyboard focus and selected device/model affordances.
-- **Blue (#0A84FF):** Active playback or selected confirmation. Use sparingly.
-- **Orange (#FF7A32):** Home icon accent only.
-- **Purple (#7167FF):** History icon accent only.
-- **Teal (#92C2C6):** Product identity accent for the logo mark and About content, not for the sidebar icon.
-- **Icon glass (#20272D):** Ink Slate top surface for the app icon.
-- **Icon glass accent (#10171D):** Dark middle tone for the app icon.
-- **Icon shadow (#04070A):** Low-brightness base for the app icon.
-- **Error (#FF9C8F):** Recording and device errors.
+- **Content (`#1E1E1E` Dark, `#F5F5F5` Light):** the opaque content pane and the onboarding page.
+- **Sidebar (`#2B2B2D` Dark, `#E8E8EA` Light):** the solid sidebar on Linux. On macOS the sidebar has no fill: the window background is blurred and shows through.
+- **Group (white 5% Dark, black 3.5% Light):** the fill of a grouped section.
+- **Selection (white 10% Dark, black 9% Light):** the neutral fill of the selected sidebar row and of a selected list row. Never blue.
+- **Control (white 12% Dark, black 8% Light):** the neutral fill of a push button.
+- **Label (white 85% Dark, black 85% Light):** main text.
+- **Label secondary (white 55% Dark, black 50% Light):** secondary lines, sidebar icons, and group footers.
+- **Label tertiary (white 25% Dark, black 26% Light):** placeholders and disabled text.
+- **Separator (white 10% Dark, black 10% Light):** hairlines and the group stroke.
+- **Accent (`#0A84FF` Dark, `#007AFF` Light):** the default button, a switch that is on, the focus ring, the selection focus, and links. It is the only accent.
+- **Status colors, on status words only:** success (`#30D158` Dark, `#34C759` Light) for ready, warning (`#FF9F0A` Dark, `#FF9500` Light) for needs help, error (`#FF453A` Dark, `#FF3B30` Light) for a failure.
+- **On accent (`#FFFFFF`):** text on the default button.
+- **Linux window buttons:** close `#FF5F57` and minimize `#FEBC2E`, with dark glyphs on hover.
 
-Do not use pure white borders. Dividers should feel like tonal changes within the dark surface, using `divider` or low-opacity white equivalents. Do not create multiple nested cards by stacking bright outlines inside panels.
+Do not add colored icon tiles, section accents, or tinted panels.
 
 ## Typography
 
-Typography follows the app chrome: compact, system-native, and high signal. The default stack is Inter with Apple system fallbacks.
+macOS uses the system UI font (`.SystemUIFont`, SF Pro). Linux keeps the embedded Inter, so text looks the same on a machine with no system copy of it.
 
-- **Display:** 24px semibold for product names and About headings.
-- **Titles:** 14-15px semibold for row titles, statistics, and compact headings.
-- **Body:** 13px medium or semibold for row detail and useful descriptions.
-- **Labels:** 12px semibold for buttons, toolbar controls, and metadata.
-- **Caps labels:** 11px semibold uppercase for definition-list keys such as Version, Recognition, and Data folder.
+- **Title:** 22px bold, on onboarding pages only.
+- **Toolbar title:** 13px semibold, in the title bar area.
+- **Body:** 13px regular, for row titles and values.
+- **Button:** 13px medium.
+- **Secondary:** 11px regular, in the secondary label color, for descriptions and group footers.
 
-Letter spacing stays at `0em`. Do not use wide tracking except where required by native controls. Avoid using more than two weights in one view. Most screens should be readable with 500 and 600 only.
+Letter spacing stays at `0em`. Weights are 400, 500, 600, and 700 for the title only.
 
 ## Layout
 
-The primary app window is fixed at 940px by 600px. Design all core screens to fit this shell without requiring window resizing. The desktop layout uses a 208px sidebar and a content area with a 34px toolbar above a scrollable pane.
+The window is fixed at 940px by 600px. It is not resizable, has no zoom, and has no full screen. On macOS the title bar is transparent with full-size content, and the native traffic lights sit at (20, 20). On Linux the frame is custom: the app draws a close and a minimize button (12px circles, 8px apart) at the same place, and no maximize button.
 
-Content should center inside a maximum width of 520px. This keeps the app compact and prevents panels from becoming wide, low-density strips. Use 8px, 12px, 16px, and 20px as the dominant spacing rhythm. Use 2px and 4px only for inset control adjustments.
+The sidebar is 232px wide. The first 48px (`sidebar-top`) hold the window buttons and stay clear. Rows start below it: 28px high, 2px apart, with 8px of padding at the sides. The title bar area above the content is 52px high and holds the view title.
 
-Page sections should be unframed or contained in a single grouped surface. Do not place cards inside cards. For About, use one grouped product summary surface with flat rows and action links inside that surface.
+The content pane has a 24px margin. Groups fill the pane width. Onboarding is one centered column, at most 640px wide.
 
-Scrollable areas should keep stable gutters and hidden scrollbars until interaction. Text must truncate or wrap intentionally inside fixed containers. Long local paths should display as `~/...` when they are under the user home directory.
+A group holds rows. A row is one line, at least 36px high, with 10px of side padding. The title is on the left. The value or the control is on the right, on the same line. A row may have one short secondary line under the title. It is truncated, never wrapped. Longer help goes in one group footer line (secondary, 11px) or in a tooltip.
+
+Onboarding uses the same groups and rows. Each permission row has its icon, name, status word, and buttons on one line. On macOS the buttons are Allow (the default button), then Open Settings. The description is one short secondary line.
+
+Long local paths show as `~/...` when they are under the user home directory.
 
 ## Elevation & Depth
 
-Depth is tonal, not shadow-heavy. The app uses glass-like grouped surfaces through dark fill, subtle border, and backdrop blur. Heavy shadows are reserved for floating dropdowns and menus only.
+Depth is tonal. There are no shadows on normal content. Shadows are only for dropdowns and menus.
 
-Use these hierarchy methods in order:
-
-- tonal contrast between background, sidebar, panel, and controls
-- one-pixel tonal dividers
-- hover fills on rows and links
-- focus rings for keyboard navigation
-- shadow only for overlays, dropdowns, and menus
-
-Avoid white outlines, stacked borders, and large drop shadows on normal content panels.
+- Hairlines (0.5px, separator color) sit only between rows inside a group, inset to the start of the text.
+- A group has a 0.5px stroke in the separator color. There is no toolbar line and no other stray border.
+- Hover and selection use the neutral selection fill.
+- The focus ring is 2px in the accent color.
 
 ## Shapes
 
-The shape language is compact macOS utility.
-
-- **Panels:** 22px radius for grouped surfaces.
-- **App logo tile:** 16px radius.
-- **Buttons and icon tiles:** 12px radius.
-- **Inset active states and dropdown options:** 10px radius.
-- **Sidebar navigation:** 9px radius.
-- **Small badges and waveform bars:** 5-7px radius.
-- **Traffic lights:** fully round.
-
-Do not mix sharp rectangular controls with rounded grouped panels in the same view. Corners should feel consistent and deliberate.
+- **Groups:** 8px radius.
+- **Push buttons:** 5px radius, 22px high.
+- **Selection and list rows:** 6px radius.
+- **App icon tile:** 16px radius.
+- **Window buttons on Linux:** fully round.
 
 ## Components
 
-**App Shell:** The shell is fixed-size and non-resizable. It has a left sidebar, a top toolbar, and a scrollable content region. On macOS the system draws the traffic lights at (20, 20) and the sidebar is translucent; on Linux the frame is custom, with drawn close and minimize lights only and a solid sidebar (#2B2B2D dark, #E8E8EA light).
+**Sidebar:** 7 rows in this order: Home, History, Dictionary, Import, Models, Settings, About. Icons are monochrome, 16px, in the secondary label color. The selected row uses the selection fill and the label color for its icon. There are no colored tiles. A focused row shows the accent focus ring.
 
-**Sidebar Navigation:** Items are 36px high with 20px icon tiles and compact labels. The active state uses `sidebar-active` and white text. Most icons use neutral gray tiles. Home and History may keep their section accents, but About stays neutral.
+**Toolbar:** only the view title (13px semibold, label color) in the title bar area. It has no bottom line.
 
-**Grouped Panels:** Panels use `panel` styling: dark tonal fill, 22px radius, clipped overflow, and tonal dividers. Use rows inside a panel instead of nested cards.
+**Groups and rows:** as in Layout. A row that is a control stays one line: the label on the left, the control on the right.
 
-**Panel Rows:** Rows use icon tile, title, optional detail, and optional trailing control. Hover states use a dark tonal fill, not a border.
+**Buttons:** 22px high, 5px radius. The default button has the accent fill and white text. Other buttons use the neutral control fill. A focused button shows the accent focus ring. A disabled button uses the tertiary label color.
 
-**Buttons:** Panel buttons are compact, 32px minimum height, 12px radius, semibold 12px labels, and subtle active scale. Use icon buttons where the action is familiar.
+**Switches, sliders, and selection focus:** use the accent.
 
-**Dropdowns:** Dropdown surfaces use a 12px radius, `surface-control`, a 1px control border, and a strong overlay shadow. Options use 10px radius and should support icons and checkmarks.
-
-**Segmented Controls:** Segmented controls use a dark inset background, 12px outer radius, 10px inner item radius, 28px height, and clear pressed state.
-
-**Traffic Lights:** On Linux the drawn window controls are 12px circles, 8px apart, with hover-only glyphs. Do not add a maximize control or any alternate maximize affordance.
-
-**About Links:** GitHub and issue links live inside the About grouped surface as flat action rows. They should use icon tiles, title, detail text, and a trailing arrow.
-
-**Recording Overlay:** The overlay should be a compact dark waveform pill, not a text-heavy modal. Motion should be functional and stable.
+**Recording overlay (flow bar):** a compact dark pill in both appearances. Its motion is functional and stable.
 
 ## Do's and Don'ts
 
 - Do keep the app utility-first, dense, and calm.
-- Do use one grouped surface per information cluster.
-- Do use tonal dividers instead of white borders.
+- Do use one group for each cluster of information.
+- Do use hairlines between rows and nothing else for separation.
+- Do follow the system Light or Dark setting.
 - Do use `~/...` for home-relative storage paths in user-facing UI.
-- Do use lucide icons for recognizable actions.
-- Do keep the About page product-focused: version, recognition purpose, data folder, GitHub, and issue link.
-- Don't expose implementation stack names such as Electron or React in product UI.
-- Don't add highlights sections or marketing copy to About.
-- Don't stack multiple card levels inside a single panel.
-- Don't make the window resizable, maximizable, or fullscreenable.
-- Don't use decorative gradients, blobs, or oversized hero sections.
-- Don't use pure black or pure white as dominant UI colors.
+- Do use lucide-style monochrome icons.
+- Don't use a color for decoration. Status color goes on status words only.
+- Don't wrap a row to a second or third line. Truncate it, or move the help to a footer or a tooltip.
+- Don't expose stack names such as Electron or React in product UI.
+- Don't make the window resizable, zoomable, or full screen.
+- Don't draw a third window button on Linux.
+- Don't use gradients, blobs, or hero sections.
