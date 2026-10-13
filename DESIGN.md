@@ -105,8 +105,8 @@ spacing:
   "3xl": 32px
   sidebar-width: 208px
   content-max-width: 520px
-  window-width: 780px
-  window-height: 520px
+  window-width: 940px
+  window-height: 600px
   toolbar-height: 34px
   sidebar-title-height: 48px
 components:
@@ -179,12 +179,12 @@ components:
   traffic-light-close:
     backgroundColor: "{colors.window-close}"
     textColor: "{colors.window-close-glyph}"
-    size: 13px
+    size: 12px
     rounded: "{rounded.full}"
   traffic-light-minimize:
     backgroundColor: "{colors.window-minimize}"
     textColor: "{colors.window-minimize-glyph}"
-    size: 13px
+    size: 12px
     rounded: "{rounded.full}"
 ---
 
@@ -240,7 +240,7 @@ Letter spacing stays at `0em`. Do not use wide tracking except where required by
 
 ## Layout
 
-The primary app window is fixed at 780px by 520px. Design all core screens to fit this shell without requiring window resizing. The desktop layout uses a 208px sidebar and a content area with a 34px toolbar above a scrollable pane.
+The primary app window is fixed at 940px by 600px. Design all core screens to fit this shell without requiring window resizing. The desktop layout uses a 208px sidebar and a content area with a 34px toolbar above a scrollable pane.
 
 Content should center inside a maximum width of 520px. This keeps the app compact and prevents panels from becoming wide, low-density strips. Use 8px, 12px, 16px, and 20px as the dominant spacing rhythm. Use 2px and 4px only for inset control adjustments.
 
@@ -278,7 +278,7 @@ Do not mix sharp rectangular controls with rounded grouped panels in the same vi
 
 ## Components
 
-**App Shell:** The shell is fixed-size and non-resizable. It has a left sidebar, a top toolbar, and a scrollable content region. The frame is custom, with close and minimize traffic lights only.
+**App Shell:** The shell is fixed-size and non-resizable. It has a left sidebar, a top toolbar, and a scrollable content region. On macOS the system draws the traffic lights at (20, 20) and the sidebar is translucent; on Linux the frame is custom, with drawn close and minimize lights only and a solid sidebar (#2B2B2D dark, #E8E8EA light).
 
 **Sidebar Navigation:** Items are 36px high with 20px icon tiles and compact labels. The active state uses `sidebar-active` and white text. Most icons use neutral gray tiles. Home and History may keep their section accents, but About stays neutral.
 
@@ -292,7 +292,7 @@ Do not mix sharp rectangular controls with rounded grouped panels in the same vi
 
 **Segmented Controls:** Segmented controls use a dark inset background, 12px outer radius, 10px inner item radius, 28px height, and clear pressed state.
 
-**Traffic Lights:** Window controls are 13px circles with hover-only glyphs. Do not add a maximize control or any alternate maximize affordance.
+**Traffic Lights:** On Linux the drawn window controls are 12px circles, 8px apart, with hover-only glyphs. Do not add a maximize control or any alternate maximize affordance.
 
 **About Links:** GitHub and issue links live inside the About grouped surface as flat action rows. They should use icon tiles, title, detail text, and a trailing arrow.
 
