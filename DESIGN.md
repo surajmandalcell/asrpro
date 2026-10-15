@@ -149,7 +149,7 @@ Hushpen is a quiet, fixed-size desktop workspace for private dictation, file tra
 
 The product is not a marketing site. It has no hero layout, no promotional panels, and no decorative compositions. The first screen is the working app. Layouts are dense enough for daily use and calm enough that recording and transcription states stay easy to read.
 
-The look is neutral and uses very few colors. Gray fills, one blue accent, and a status color only on status words. Avoid exposing implementation details such as framework names or internal architecture in the UI.
+The look is neutral and uses very few colors. Gray fills, one blue accent, and a status color only on status words and the one status icon. Avoid exposing implementation details such as framework names or internal architecture in the UI.
 
 ## App Icon
 
@@ -177,7 +177,8 @@ All colors are neutral grays plus one accent. Tokens come in a Dark and a Light 
 - **Label tertiary (white 25% Dark, black 26% Light):** placeholders and disabled text.
 - **Separator (white 10% Dark, black 10% Light):** hairlines and the group stroke.
 - **Accent (`#0A84FF` Dark, `#007AFF` Light):** the default button, a switch that is on, the focus ring, the selection focus, and links. It is the only accent.
-- **Status colors, on status words only:** success (`#30D158` Dark, `#34C759` Light) for ready, warning (`#FF9F0A` Dark, `#FF9500` Light) for needs help, error (`#FF453A` Dark, `#FF3B30` Light) for a failure.
+- **Status colors, on status words only:** success (`#30D158` Dark, `#34C759` Light) for ready, error (`#FF453A` Dark, `#FF3B30` Light) for a failure.
+- **Status icon, for a row that needs the user:** warning (`#FF9F0A` Dark, `#FF9500` Light) on an exclamation icon (lucide `circle-alert`, 16px) with the tooltip "Needs attention" and no word. The icon is the only place the warning color appears. Its label in the accessibility tree is "Needs attention".
 - **On accent (`#FFFFFF`):** text on the default button.
 - **Linux window buttons:** close `#FF5F57` and minimize `#FEBC2E`, with dark glyphs on hover.
 
@@ -205,7 +206,7 @@ The content pane has a 24px margin. Groups fill the pane width. Onboarding is on
 
 A group holds rows. A row is one line, at least 36px high, with 10px of side padding. The title is on the left. The value or the control is on the right, on the same line. A row may have one short secondary line under the title. It is truncated, never wrapped. Longer help goes in one group footer line (secondary, 11px) or in a tooltip.
 
-Onboarding uses the same groups and rows. Each permission row has its icon, name, status word, and buttons on one line. On macOS the buttons are Allow (the default button), then Open Settings. The description is one short secondary line.
+Onboarding uses the same groups and rows. Each permission row has its icon, name, status (the word Ready, or the attention icon), and buttons on one line. On macOS the buttons are Allow (the default button), then Open Settings. The description is one short secondary line.
 
 Long local paths show as `~/...` when they are under the user home directory.
 
@@ -248,7 +249,7 @@ Depth is tonal. There are no shadows on normal content. Shadows are only for dro
 - Do follow the system Light or Dark setting.
 - Do use `~/...` for home-relative storage paths in user-facing UI.
 - Do use lucide-style monochrome icons.
-- Don't use a color for decoration. Status color goes on status words only.
+- Don't use a color for decoration. Status color goes on status words and the attention icon only.
 - Don't wrap a row to a second or third line. Truncate it, or move the help to a footer or a tooltip.
 - Don't expose stack names such as Electron or React in product UI.
 - Don't make the window resizable, zoomable, or full screen.
