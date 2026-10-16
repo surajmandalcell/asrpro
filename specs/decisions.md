@@ -119,7 +119,7 @@ decision, add it here in the same change (D-26).
   with 2 threads by default; GPU tests are opt-in with
   `ASRPRO_TEST_GPU=1`.
 - **D-28 Validation harness.** The harness stays outside the repo at
-  `/Volumes/External1TB/data/_custom/Droid/asrpro-validation/harness/`. Workers
+  `/Volumes/External1TB/data/_custom/droid/asrpro-validation/harness/`. Workers
   may extend it if it stays backward compatible and its README is
   updated. CI uses in-repo scripts.
 - **D-29 Undo over confirm.** Delete confirmations are replaced by undo
