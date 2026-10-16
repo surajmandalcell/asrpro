@@ -1,75 +1,80 @@
-# ASR Pro domain glossary
+# Hushpen domain glossary
 
 This glossary is the shared vocabulary for the code, the tests, and the
 specs. Use these terms in names and in UI copy. When a feature settles a new
-term or changes one, update this file in the same change (D-26).
+term or changes one, update this file in the same change (D-21).
 
 ## Naming tree
 
 ```
-ASR Pro
-└── data folder                     all app data on disk (D-20)
-    ├── settings                    config/settings.json (schema v2)
-    ├── model                       one speech or speaker model
-    │   ├── Whisper model           models/whisper/*.bin (pinned hash)
-    │   └── diarization model       models/diarization/*.onnx
+Hushpen
+├── hushpen (UI process, GPUI)
+│   ├── main window                 940x600, sidebar with 7 views
+│   ├── flow bar                    the dark pill that shows dictation states
+│   ├── tray                        menu with the same actions
+│   ├── dictation                   one hold-to-talk run of the state machine
+│   │   └── recording               microphone audio in a session WAV
+│   ├── updater                     opt-in check and install
+│   └── test hook                   debug builds only
+├── hushpen engine (child)          whisper.cpp, started as `hushpen engine`
+├── hushpen-llm (child binary)      llama.cpp, one model in RAM
+└── data folder                     all app data on disk (D-13)
+    ├── settings                    config/settings.json
+    ├── model                       models/whisper/*.bin, models/llm/*.gguf
     ├── history row                 one entry in history/history.db
-    │   ├── audio file              history/audio/<id>.webm|wav
-    │   ├── transcript              the row text (edited text wins)
-    │   │   └── segment             one timed part of a transcript
-    │   │       └── speaker         who speaks in a segment
-    │   └── transcript file         transcripts/<id>.txt copy
-    └── session WAV                 cache/sessions/<sessionId>.wav
-        └── recording session       one open capture stream
+    │   ├── audio file              audio/<id>.wav
+    │   └── transcript              raw text and cleaned text
+    ├── dictionary entry            a word or a replacement
+    └── session WAV                 cache/sessions/<id>.wav
 ```
 
 ## Terms
 
-- **recording**: the act of capturing microphone audio in the app. A
-  recording starts from Home, the tray, the menu, or the global shortcut,
-  and it ends as a history row or as a cancelled row ("Not transcribed").
-- **session**: one open audio stream between the renderer and the engine
-  process, keyed by a session id. A session writes its 16 kHz PCM to a
-  session WAV in `cache/sessions/`. Session purposes: dictation, import,
-  reprocess.
-- **transcript**: the text of a history row. The edited transcript is what
-  search and exports use; the original engine text stays stored for
-  "Revert to original" and Reprocess.
-- **segment**: one timed part of a transcript, with start and end in
-  milliseconds. A row without segments displays as one segment that covers
-  the full duration.
-- **speaker**: a voice that the diarization process found in the audio.
-  Speakers carry a stable key and a display name the user can edit. A
-  single detected speaker hides the labels in the UI.
-- **history row**: one entry in the SQLite history database: text, audio
-  file, model, language, timing, status, segments, and speakers. There is
-  no row limit; audio retention removes only audio files.
-- **bundle**: one `.asrpro-bundle` zip file with selected history rows and
-  optionally their audio, for moving history between computers.
-- **model**: a speech model (Whisper, roles final or live) or a speaker
-  model (segmentation or embedding). Every model has a pinned hash and
-  downloads only when the user asks.
-- **settings registry**: the main-process owner of `config/settings.json`.
-  It validates values against one schema, writes atomically, keeps unknown
-  keys, and migrates the legacy settings files and localStorage keys.
-- **error code**: a stable name from `shared/error-codes.json` that
-  crosses IPC instead of text. The renderer maps a code to a message.
-- **error log**: `logs/asrpro.log`, a local rotating file of engine, IPC,
-  and migration errors. It never holds transcript text or audio.
-- **open target**: a name (`repo`, `issues`, `releases`, `data-folder`,
-  `log-folder`) the renderer sends over `shell:open`. Main maps it to an
-  allow-listed GitHub URL or a folder. The renderer never sends a URL or a
-  path.
-- **data folder**: the root of all app data. Its location depends on the
-  build type (D-20); the UI shows it as `~/...` when it is under the user
-  home.
+- **dictation**: one run of the dictation state machine: idle, listening,
+  transcribing, cleaning, inserting, then done, cancelled, or failed. A
+  dictation starts from the hold key, the flow bar, the tray, or Home.
+- **hold key**: the key the user holds to talk (Right Option on macOS, Right
+  Alt on Linux by default). Tap and double-tap rules decide hold and
+  hands-free mode. Esc cancels.
+- **recording**: the microphone audio of one dictation. It streams to a
+  session WAV, so an engine crash keeps the audio.
+- **transcript**: the text of a history row. The raw engine text and the
+  cleaned text are both stored.
+- **cleanup**: the step after transcription. Rule-based cleanup (fillers,
+  repeats, spoken punctuation, "scratch that") is on by default. AI cleanup
+  uses a local LLM or an opt-in endpoint and is off by default.
+- **Command Mode**: hold a key, speak an instruction, and the LLM edits the
+  selected text.
+- **insert**: paste the final text into the focused app. The clipboard is
+  saved first and restored after the target app reads it.
+- **history row**: one entry in the SQLite history database. Search answers
+  in under 200 ms. Audio is deleted after 30 days by default; the text stays.
+- **dictionary entry**: a word that goes into the Whisper prompt, or a
+  replacement applied after cleanup.
+- **model**: a Whisper model (ggml `.bin`) or an LLM model (GGUF). Every
+  model has a pinned sha256 and downloads only when the user asks.
+- **flow bar**: the always-on-top pill that never takes focus. It stays dark
+  in Light and Dark appearance.
+- **appearance**: the system Light or Dark setting. Views follow it live.
+- **settings registry**: the owner of `config/settings.json`. It validates
+  values, writes atomically, and keeps unknown keys.
+- **error log**: `logs/hushpen.log`, a local rotating file. It never holds
+  transcript text or audio.
+- **data folder**: the root of all app data (D-13). The UI shows it as `~/...`
+  when it is under the user home.
+- **test hook**: the debug-only socket that reports the element tree and the
+  state and runs actions. Release builds do not contain it (D-08).
 
 ## Process names
 
-- **main process**: owns the data folder, settings, the history database,
-  the windows, the tray, the menu, and the IPC router.
-- **renderer**: the sandboxed main window. It captures the microphone and
-  decodes media files. It never touches Node APIs or raw file paths.
-- **engine process**: the utilityProcess that runs Whisper.
-- **speaker process**: the utilityProcess that runs diarization.
-- **overlay**: the small always-on-top waveform window.
+- **hushpen**: the UI process. It owns the windows, the tray, the hold key,
+  capture, insertion, the store, and the updater.
+- **engine**: the child process (`hushpen engine`) that runs whisper.cpp.
+- **hushpen-llm**: the child binary that runs llama.cpp (D-06).
+- Children talk to `hushpen` over framed stdin and stdout only.
+
+## History notes
+
+ASR Pro was the name of the Electron app (1.x and the 2.0 Electron mission).
+Hushpen replaced it in 2.0.0. The terms bundle, speaker, segment, session,
+open target, and error code belonged to that app and are not part of Hushpen.

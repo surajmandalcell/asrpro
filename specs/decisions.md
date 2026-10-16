@@ -1,198 +1,93 @@
-# ASR Pro 2.0 owner decisions
+# Hushpen 2.0 decisions
 
-These are the binding owner decisions for the 2.0 mission. They override
-older planning reports where they differ. When a feature settles a new
-decision, add it here in the same change (D-26).
+These are the binding decisions for Hushpen 2.0.0. When a feature settles a
+new decision, add it here in the same change (D-21).
 
-- **D-01 License.** `AGPL-3.0-or-later` in package.json, full AGPL v3
-  LICENSE file. Third-party notices and the About "Open-source licenses"
-  row ship with the 2.0 builds.
-- **D-02 Version.** 2.0.0. The GitHub release v2.0.0 is published only
-  after every milestone validation passed and every release file was
-  checked.
-- **D-03 CI budget.** `ci.yml` is manual only (`workflow_dispatch`, inputs
-  `platforms` and `suite`). No push or pull_request triggers. Exactly 3
-  planned runs in the whole mission, plus at most 2 re-runs of failed
-  jobs. `build-release.yml` is deleted in M6.
-- **D-04 Docs site.** `docs/**` deploys to GitHub Pages on push and is
-  changed only in `m7-docs-site`. README changes in
-  `m6-readme-whats-new`.
-- **D-05 Lint.** oxlint 1.86.0 (exact devDependency) with
-  `.oxlintrc.json`: plugins react, typescript, import, unicorn, oxc;
-  correctness is error; `react-hooks/rules-of-hooks` error;
-  `react-hooks/exhaustive-deps` warn; duplicate React Compiler rules off;
-  `vitest/require-mock-type-parameters` off. Errors fail the gate;
-  warnings are allowed.
-- **D-06 Renderer origin.** The security baseline keeps `file://` and adds
-  the build-time CSP meta tag. M2 moves the renderer to `app://asrpro`
-  (privileged standard + secure scheme that serves only files under
-  `dist/`) and migrates the old `file://` localStorage. `fetch()` to
-  `asrpro-media://` needs `corsEnabled: true` and
-  `Access-Control-Allow-Origin: app://asrpro`; `<audio>` needs no CORS.
-  AudioWorklet modules ship as files.
-- **D-07 Sandbox.** The main window runs with `sandbox: true`. The preload
-  stays self-contained. `webUtils.getPathForFile` works in the sandboxed
-  preload. Never post a transfer list that holds the message's own
-  buffer: post `Int16Array` without a transfer list.
-- **D-08 Auto-copy fix.** The permission handlers also allow
-  `clipboard-sanitized-write` for trusted app URLs; `clipboard-read`
-  stays denied.
-- **D-09 History search.** One FTS5 table with
-  `tokenize = "trigram remove_diacritics 1"`. A query with any token
-  shorter than 3 characters uses `LIKE` over title, text, and original
-  file name. `node:sqlite` tests run only in the vitest node project.
-  Suppress only the SQLite ExperimentalWarning.
-- **D-10 Audio copies.** Imported files keep a WebM/Opus 32 kbps mono copy
-  encoded from the decoded 16 kHz PCM, streamed to main in chunks. If
-  Opus encoding is not available, keep the 16 kHz WAV. Dictation keeps
-  MediaRecorder webm/opus at 32 kbps.
-- **D-11 Transcript editing.** Edit a row's transcript text and segment
-  texts, and rename its title. The original engine text and segments stay
-  stored, so "Revert to original" and Reprocess work. Search and exports
-  use the edited text.
-- **D-12 History tools.** Multi-select mode; single and bulk delete with
-  an undo toast (about 8 s; files are removed after the window closes or
-  at quit); "Delete audio only"; audio retention settings (max age, max
-  total size), default off. The retention sweep removes only audio files,
-  never rows or text; such rows show "Audio removed".
-- **D-13 Import queue.** Picked or dropped files wait in a queue and run
-  one at a time. Each item shows its state. The user can cancel one item
-  or all. The queue survives switching views, not an app restart.
-- **D-14 Small fixes.** About gets "Open data folder" and "Open log
-  folder"; Configuration gets a "Show overlay" toggle; cancel on a model
-  download removes the partial file; every dropdown supports full
-  keyboard navigation; a local error log under `<dataDir>/logs` rotates
-  at about 2 MB x 3 files and never holds transcript text or audio.
-- **D-15 Window.** `resizable: false`, `maximizable: false`,
-  `fullscreenable: false`.
-- **D-16 Live captions.** Off by default. Captions model `auto` is
-  `whisper-tiny-en` for English-only final models, `whisper-tiny`
-  otherwise; downloaded after a prompt on first enable. Shown in a Home
-  panel (committed normal, tentative muted) and in the overlay only when
-  `captions.showInOverlay` is on. The final pass replaces the live text.
-  Live text is never saved.
-- **D-17 Cancelled transcription.** A cancelled transcription saves a row
-  with status `cancelled`, audio kept, no text, shown as
-  "Not transcribed".
-- **D-18 GPU.** Metal on macOS only. Windows and Linux ship CPU engine
-  packages and the GPU toggle is disabled there with a reason.
-  `ASRPRO_DISABLE_GPU` really forces CPU. A GPU init failure falls back
-  to CPU with a notice.
-- **D-19 Speaker labels.** On request only, count Auto or 2-6.
-  Segmentation pyannote 3.0 (MIT) is fetched at build time with a sha256
-  check and bundled. Embedding TitaNet-small (CC-BY-4.0) downloads on
-  demand with a pinned sha256. Limit 2 h of audio. Labels hidden when
-  only 1 speaker is found. The UI says labels are estimated on the
-  device. Windows arm64 uses the sherpa-onnx WASM package.
-- **D-20 Data folder per build type.** Windows installed:
-  `%LOCALAPPDATA%\ASR Pro\data`; portable: beside the exe. Linux
-  deb/rpm/AppImage: `${XDG_DATA_HOME:-~/.local/share}/asrpro`; tar.gz:
-  beside the app. macOS in Applications:
-  `~/Library/Application Support/ASR Pro/data`; elsewhere beside the app,
-  with the profile path as fallback when that place is read-only.
-- **D-21 Linux packages.** deb/rpm carry homepage, license, maintainer,
-  and dependencies; deb depends include `libgbm1` and `libasound2` (or
-  `libasound2t64` as an alternative). The arm64 AppImage ships only if it
-  is proven to start on a stock distro; otherwise it is skipped and the
-  README says so.
-- **D-22 Updater.** electron-updater 6.8.9, opt-in, off by default.
-  Self-update for nsis, AppImage, deb, rpm; notice mode (GitHub
-  releases/latest link) for macOS, Windows portable, and tar.gz. The
-  `x-user-staging-id` header is empty; the cache lives under
-  `<dataDir>/cache/updater`; at most one automatic check per 24 h; no
-  network request at start while the toggle is off.
-- **D-23 Test seams.** No in-app test switches. Allowed seams only:
-  `ASRPRO_DATA_DIR`, `VITE_DEV_SERVER_URL`, `ASRPRO_TEST_ASSETS`,
-  Chromium command-line switches, `--inspect`, build-time
-  electron-builder config (`-c.*`), the engine host transport seam, and
-  `dev-app-update.yml` with `forceDevUpdateConfig` in unpackaged runs.
-  `ASRPRO_NO_ACTIVATE` and `ASRPRO_FAKE_AUDIO_FILE` are not added.
-- **D-24 Home stats.** "This week" is a rolling last 7 days by
-  `created_at`. Failed and cancelled rows are excluded from word and
-  minute sums; the recordings count counts completed rows only.
-- **D-25 What's new.** Home "What's new" comes from
-  `shared/release-notes.json`, translated in all 8 locales.
-- **D-26 Specs.** `specs/ddd.md` (glossary with the naming tree) and
+- **D-01 License.** `AGPL-3.0-or-later` in every crate, the full AGPL v3
+  `LICENSE` file, and `THIRD-PARTY-NOTICES.html` inside every package. The
+  About "Open-source licenses" row links to it. Every dependency license
+  must be compatible with AGPL-3.0-or-later (`deny.toml` allow list).
+- **D-02 Version.** 2.0.0. The GitHub release v2.0.0 is published only after
+  every validation passed and every release file was checked.
+- **D-03 CI budget.** Every workflow runs by `workflow_dispatch` only.
+  `release.yml` has a required `tag` input and checks out that tag. No push,
+  tag-push, or pull_request trigger. The one exception is `deploy-docs.yml`.
+  GitHub Actions gets at most 35 runs; the hard limit is 50.
+- **D-04 Docs site.** `docs/**` deploys to GitHub Pages on push and changes
+  once, in the publish step after the release.
+- **D-05 GPUI.** The UI is GPUI (`gpui-pre =0.3.7`, GPUI Kit `=0.7.0`) with
+  the engine in Rust. No web view and no Python sidecar. Crates use exact
+  `=` pins. Component tests use `TestAppContext`; pixel tests render offscreen
+  on Linux.
+- **D-06 Two binaries.** `hushpen` (UI and the `engine` subcommand) links
+  whisper.cpp. `hushpen-llm` links llama.cpp. Each brings its own ggml, and
+  in one binary one copy silently replaces the other. `hushpen-llm` never
+  depends on `hushpen-engine`, and the reverse. An xtask check fails if one
+  binary has both sys crates. Both binaries ship in every package.
+- **D-07 No data migration.** Hushpen reads nothing from the 1.x apps or from
+  the Electron builds: no settings, history, or models are imported. It
+  starts with a new data folder.
+- **D-08 Test hook.** A debug-only hook (cargo feature `test-automation`)
+  reports the element tree and the state and runs actions for the Linux and
+  Mac checks. A release build never contains it, and `cargo build --release
+  --features test-automation` is refused with a `compile_error!`. `xtask
+  release-check` scans the binaries and the packages for it. The same rule
+  covers the `update-test-feed` feature.
+- **D-09 Gate.** Merging needs `cargo fmt --check`, `cargo clippy --workspace
+  --all-targets -- -D warnings`, `cargo test --workspace`, `cargo deny
+  check`, `xtask two-binary`, and `xtask net-audit`. `cargo xtask gate` runs
+  them in one step.
+  Warnings are errors. The toolchain is Rust 1.99.0 (`rust-toolchain.toml`).
+- **D-10 Platforms.** macOS 13 or later on arm64, and Linux x64 and arm64 on
+  X11. On Wayland the global key and paste show "not available". Linux needs
+  a Vulkan or GL driver. Not in 2.0: Windows, Intel Mac, UI languages other
+  than English, speaker labels, live captions, bundles, notes, stats,
+  snippets, per-app styles, video import, Opus or WebM import, code signing,
+  and app stores.
+- **D-11 Window.** Fixed at 940x600 on every OS: not resizable, no zoom, no
+  full screen. On X11 the size hints set min equal to max. One app instance
+  runs at a time.
+- **D-12 Appearance.** The app follows the system Light or Dark setting and
+  changes live. Without a system setting it uses Dark. `DESIGN.md` is the
+  binding design system.
+- **D-13 Data folder.** macOS: `~/Library/Application Support/Hushpen`.
+  Linux: `${XDG_DATA_HOME:-~/.local/share}/hushpen`. The user can move it in
+  Settings. The UI shows `~/...` for paths under the home folder.
+- **D-14 Privacy.** No telemetry. Network use is limited to model downloads
+  the user starts, the update check the user turns on, and the opt-in
+  OpenAI-compatible endpoint. `xtask net-audit` scans for other calls.
+- **D-15 Cleanup.** Rule-based cleanup is on by default and runs offline. AI
+  cleanup is opt-in. It uses a local LLM chosen by RAM, or an endpoint the
+  user sets. An LLM timeout or a failed output check falls back to the
+  rule-based text. The endpoint API key lives in a 0600 file, not in the
+  Keychain.
+- **D-16 Insertion.** The app saves the clipboard, pastes, and restores the
+  clipboard. It never types into a secure field. Terminals get their own
+  paste key.
+- **D-17 Updates.** Off by default. One check per 24 hours plus "Check now".
+  The manifest `latest.json` is signed with minisign and the public key is in
+  the app. The macOS zip and the AppImage replace themselves; deb, rpm, and
+  tar.gz show a notice with the release link. No install id.
+- **D-18 Signing.** macOS builds are ad-hoc signed only: no identity, no
+  Keychain, no notarization. Each ad-hoc build and each update resets the
+  Microphone, Accessibility, and Input Monitoring grants. The app detects a
+  lost grant at start and reopens the onboarding permission step.
+- **D-19 Engine build.** Metal on macOS and CPU on Linux. Release builds use
+  `GGML_NATIVE=OFF` so one build runs on older CPUs. Cancel finishes in under
+  1 s, and an engine crash keeps the audio.
+- **D-20 Packages.** macOS zip and dmg; Linux AppImage, deb, rpm, and tar.gz
+  for x64 and arm64. File names are `Hushpen-<version>-<target>.<ext>`. The
+  dmg is built on CI only.
+- **D-21 Specs.** `specs/ddd.md` (glossary with the naming tree) and
   `specs/decisions.md` (this file) live at the repo root. Features update
   them when they settle naming or behavior.
-- **D-27 Engine test resources.** Engine tests on the Mac host use CPU
-  with 2 threads by default; GPU tests are opt-in with
-  `ASRPRO_TEST_GPU=1`.
-- **D-28 Validation harness.** The harness stays outside the repo at
-  `/Volumes/External1TB/data/_custom/droid/asrpro-validation/harness/`. Workers
-  may extend it if it stays backward compatible and its README is
-  updated. CI uses in-repo scripts.
-- **D-29 Undo over confirm.** Delete confirmations are replaced by undo
-  toasts (single and bulk).
-- **D-30 Legacy engine files.** `scripts/prepare-whisper-addon.cjs`,
-  `scripts/patch-elf-runpath.cjs`, and the `postinstall` script are
-  deleted in M1; `after-pack` is rewritten; useful logic from
-  `electron/whisper-engine.cjs` moves into the new model manager and
-  engine host.
-- **D-31 File windowing.** Long files transcribe in 120 s windows with
-  10 s overlap: accept segments that end inside the window, shift times
-  by the window start, account for MP3/HE-AAC decoder lead-in offsets.
-  Resampling uses the app's own windowed-sinc resampler, not
-  OfflineAudioContext.
-- **D-32 Time and memory targets.** Cancel finishes in less than 1 s;
-  live captions lag about 1-2 s; history pages hold 50 rows; search
-  answers in less than 200 ms on 10,000 rows; a 3-hour import keeps the
-  main window below about 1.3 GB; the UI never freezes during model load
-  or transcription.
-- **D-33 Privacy.** No telemetry. Network only for model downloads the
-  user starts and update checks the user turns on.
-- **D-34 Multilingual tiny model.** `whisper-tiny` (`ggml-tiny.bin`) is
-  downloaded once into the test assets in M1, its whisper.cpp SHA-1 is
-  verified, and it is pinned in `shared/models.json`.
-- **D-35 Out of scope.** Resizable window, accounts and cloud sync,
-  signing and notarization, app stores, hosted API, Intel Mac builds,
-  auto-paste into other apps, light theme, VAD as a user feature, mic
-  processing options, word-level highlight (segment highlight is in
-  scope).
-- **D-36 Settings and IPC foundation.** `settings.json` is
-  `{schemaVersion: 2, values}` with flat dotted keys; keys this build does
-  not know stay under `values._unknown` and survive every save. Each write
-  is atomic (temp file, fsync, rename). A file that is not valid JSON or
-  has the wrong shape is renamed to `settings.json.corrupt-<ms>`, defaults
-  are written, and the log records it. Legacy `app-settings.json` and
-  `overlay-settings.json` are read only when `settings.json` is missing,
-  then renamed to `*.migrated`. Internal keys (`overlay.customBounds`,
-  `startup.executablePath`, `updates.lastCheckAt`,
-  `updates.dismissedVersion`, `migrations.legacyLocalStorage`) cannot be
-  set from the renderer. The renderer reads the old `asrpro.selectedModel`
-  and `asrpro.audioInputDevice` localStorage keys and hands them to
-  `settings:import-legacy` once; the keys stay in place. The first call sets
-  `migrations.legacyLocalStorage` even when no value is accepted, and the
-  renderer skips the call when the marker is already set.
-- **D-37 IPC contract.** The preload exposes only `invoke`, `send`, and
-  `on`, limited to the channels in `shared/ipc-channels.json` (a drift test
-  compares the lists). Every handler checks the sender window and the
-  payload, and replies `{ok: true, value}` or `{ok: false, error: {code,
-  params?, detail?}}` with a code from `shared/error-codes.json`. The
-  renderer turns the reply into an `AppError` in `src/lib/bridge.ts` and
-  picks the message from the code; English error text is never matched.
-- **D-38 Error log.** `logs/asrpro.log` rotates at 2 MB and keeps 3 files.
-  It records engine, IPC, and migration errors as timestamp, level, scope,
-  code, and a detail capped at 500 characters. Validation messages name the
-  failing field, never its value. Transcript text and audio never reach the
-  log.
-- **D-39 Linux window flags.** Electron ignores `setMaximizable` on Linux
-  and `isMaximizable()` always answers true. The main window overrides
-  `isMaximizable` to report false there; the window still cannot be
-  maximized (not resizable, `maximize` is undone).
-- **D-40 Security baseline on `file://`.** The sender check also compares
-  the frame URL with the app URL (the built `dist/index.html`, or
-  `VITE_DEV_SERVER_URL` when not packaged); the overlay role accepts only
-  its `data:text/html` page. One `web-contents-created` guard blocks
-  `will-navigate`, `will-frame-navigate`, `will-redirect`, and
-  `will-attach-webview` for every URL except the app page, and denies every
-  `window.open`. External pages and folders open only through the
-  `shell:open` targets `repo`, `issues` (the new-issue form), `releases`,
-  `data-folder`, and `log-folder`; `openExternal` accepts only
-  `https://github.com/surajmandalcell/asrpro` and below. Both windows
-  share `secureWebPreferences` (sandbox, context isolation, no Node). The
-  production CSP meta tag comes from a build-only Vite plugin; the overlay
-  data URL carries `default-src 'none'` with a sha256 of its inline script.
-  Saved 1.x history audio (data URLs) plays through a blob URL because the
-  CSP has no `data:` in `media-src`. A file dropped outside a drop zone is
-  cancelled in the renderer, and the navigation guard backs it up.
+- **D-22 Linux test harness.** Linux end-to-end tests run the debug app in
+  containers with Xvfb, openbox, PulseAudio, and Mesa lavapipe. At most 3
+  slots run engine work at once.
+
+## History notes
+
+ASR Pro was the name of the Electron app (1.x, and a 2.0 mission that the
+Rust rewrite replaced). Its decisions D-01 to D-40 covered Electron, IPC,
+the renderer, Windows, and the old data folders. They no longer apply and
+stay in git history.
